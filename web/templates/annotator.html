@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOI Defect Labeling Tool</title>
+    <link rel="stylesheet" href="/static/css/annotator.css">
+</head>
+<body>
+
+<!-- ===== 顶部信息栏 ===== -->
+<header id="topbar">
+    <span class="info-item">图片: <span class="info-val" id="info-image-id">-</span></span>
+    <span class="sep">|</span>
+    <span class="info-item">文件: <span class="info-val" id="info-filename">-</span></span>
+    <span class="sep">|</span>
+    <span class="info-item" id="info-progress">- / -</span>
+    <span class="sep">|</span>
+    <span class="info-item">状态: <span class="info-val" id="info-status">-</span></span>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <span class="info-item"><span class="info-val" id="info-pct">0%</span></span>
+</header>
+
+<!-- ===== 主体两栏 ===== -->
+<div id="main">
+
+    <!-- ===== 左侧 Canvas ===== -->
+    <div id="canvas-panel">
+        <canvas id="image-canvas"></canvas>
+        <div id="zoom-tag">100%</div>
+    </div>
+
+    <!-- ===== 右侧控制面板 ===== -->
+    <div id="side-panel">
+
+        <!-- 标注模式 + 当前类别 -->
+        <section>
+            <h3>
+                模式: <span id="draw-mode-tag" style="color:#74c0fc;">RECT</span>
+                <span class="shortcut">(R=矩形 P=多边形)</span>
+            </h3>
+            <div class="btn-row" style="margin-top:4px;">
+                <button class="mode-btn active-mode" id="mode-rectangle" onclick="switchDrawMode('rectangle')">📦 矩形 R</button>
+                <button class="mode-btn" id="mode-polygon" onclick="switchDrawMode('polygon')">🔷 多边形 P</button>
+            </div>
+            <div class="btn-row" style="margin-top:4px; font-size:10px; color:var(--muted);">
+                <span>Polygon: 点击添加点 | Enter/双击 完成 | Backspace 撤销点 | Esc 取消</span>
+            </div>
+        </section>
+
+        <!-- 当前类别 -->
+        <section>
+            <h3>当前类别: <span id="selected-cat" style="color:#fff;">无</span></h3>
+        </section>
+
+        <!-- 缺陷类别按钮 -->
+        <section>
+            <h3>缺陷类别 A–F <span class="shortcut">(A/B/C/D/E/F)</span></h3>
+            <div class="cat-grid" id="defect-buttons"></div>
+            <h4>正常区域 N1–N3</h4>
+            <div class="cat-grid" id="normal-buttons"></div>
+        </section>
+
+        <!-- 属性表单 -->
+        <section>
+            <h3>标注属性</h3>
+            <div class="form-row">
+                <label>Region</label>
+                <select id="prop-region">
+                    <option value="">--</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Severity</label>
+                <select id="prop-severity">
+                    <option value="">--</option>
+                    <option value="1">1-轻微</option>
+                    <option value="2" selected>2-中等</option>
+                    <option value="3">3-严重</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Quality</label>
+                <select id="prop-quality">
+                    <option value="good">good</option>
+                    <option value="uncertain">uncertain</option>
+                    <option value="bad" selected>bad</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Note</label>
+                <input type="text" id="prop-note" placeholder="可选">
+            </div>
+        </section>
+
+        <!-- 操作按钮 -->
+        <section>
+            <h3>操作 <span class="shortcut">(快捷键)</span></h3>
+            <div class="btn-row">
+                <button class="btn btn-save" onclick="saveCurrentAnnotation()">保存当前框 <span class="shortcut">S</span></button>
+                <button class="btn btn-undo" onclick="undoPending()">撤销绘制 <span class="shortcut">Esc</span></button>
+                <button class="btn btn-delete" onclick="deleteSelectedAnnotation()">删除选中 <span class="shortcut">Del</span></button>
+            </div>
+            <div class="btn-row" style="margin-top:6px;">
+                <button class="btn btn-done" onclick="setImageStatus('done')">标记完成</button>
+                <button class="btn btn-uncertain" onclick="setImageStatus('uncertain')">标记不确定</button>
+                <button class="btn btn-skip" onclick="setImageStatus('skipped')">跳过</button>
+            </div>
+            <div class="btn-row" style="margin-top:6px;">
+                <button class="btn btn-nav" onclick="navPrev()">上一张 <span class="shortcut">←</span></button>
+                <button class="btn btn-nav" onclick="navNext()">下一张 <span class="shortcut">→</span></button>
+                <button class="btn btn-nav" onclick="saveAndRefresh()" style="background:var(--accent);">刷新</button>
+            </div>
+        </section>
+
+        <!-- 标注列表 -->
+        <section style="flex:1; overflow-y:auto; min-height:120px;">
+            <h3>标注列表 <span id="ann-count" style="font-size:11px;color:var(--muted);">(0)</span></h3>
+            <table id="ann-table">
+                <thead>
+                    <tr>
+                        <th>ann_id</th><th>Code</th><th>Label</th>
+                        <th>Region</th><th>Sev</th><th>Bbox</th><th>Note</th>
+                    </tr>
+                </thead>
+                <tbody id="ann-tbody"></tbody>
+            </table>
+        </section>
+
+        <!-- 图例 -->
+        <section>
+            <h3>图例</h3>
+            <div id="legend"></div>
+        </section>
+
+    </div><!-- /side-panel -->
+</div><!-- /main -->
+
+<script src="/static/js/annotator.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments and local configuration
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Editors and operating systems
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Notebook and runtime state
+.ipynb_checkpoints/
+*.ipynb
+*.log
+logs/
+.cache/
+**/.start_image_id
+
+# Private AOI data and annotations. Keep only documentation placeholders.
+data/**
+!data/README.md
+
+# Model weights and generated experiment outputs
+models/**
+!models/README.md
+runs/
+reports/**
+!reports/README.md
+
+# Common ML binary artifacts
+*.pt
+*.pth
+*.onnx
+*.engine
+*.joblib
+*.npy
+*.npz
+*.cache
+
+# Private images and office deliverables
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tif
+*.tiff
+*.gif
+*.pptx
+*.docx
+*.pdf
+
+# Historical versions and local authoring workspaces
+backups/
+**/backups/
+.codex_ppt_work/
+.report_work/
+.speech_work/
+docs/superpowers/
+
+# Temporary task files used by local coding agents
+task_plan.md
+notes.md
+
