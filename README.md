@@ -2,7 +2,7 @@
 
 面向半导体封装 AOI 局部图像的小样本缺陷分类、实例定位与结果分析项目。项目覆盖数据清单、Web 标注、标注校验、训练前审计、目标感知 Patch 分类、YOLO 目标检测、错误归因和小目标切片推理。
 
-真实 AOI 图像、人工标注、模型权重和实验输出包含非公开数据，**不在仓库中发布**。仓库保留可复现代码、标签定义和运行说明，使用者需要准备自己的数据。
+真实 AOI 图像、人工标注、模型权重和实验输出包含非公开数据，不写入 Git 历史。经授权的项目成员可从私有 Release `private-data-v1.0.0` 下载去标识化数据与实验归档；普通代码使用者仍需准备自己的数据。
 
 ## 主要能力
 
@@ -37,6 +37,7 @@
 configs/                 标签定义
 data/README.md           私有数据目录约定
 docs/REPRODUCIBILITY.md  数据划分、评估与复现口径
+docs/PRIVATE_RELEASE.md  私有 Release 内容、下载和完整性校验
 models/README.md         本地模型目录约定
 reports/README.md        本地报告目录约定
 scripts/                 编号式数据和训练流水线
@@ -140,7 +141,7 @@ python scripts/27_generate_final_optimization_report.py
 
 ## 数据与隐私
 
-本仓库不包含以下内容：
+Git 历史不包含以下内容：
 
 - 原始或重命名后的 AOI 图像；
 - 人工标注 JSON、CSV、图像清单和数据哈希；
@@ -148,9 +149,10 @@ python scripts/27_generate_final_optimization_report.py
 - 标注复核图、预测报告、PPT、Word 报告和历史备份；
 - 用户姓名、学号、联系方式、绝对路径或访问密钥。
 
-如需复现实验，请使用自有或获授权的数据，并在本地生成派生文件。
+私有 Release `private-data-v1.0.0` 将已获授权的材料分为图像、标注、模型和实验输出四个附件。发布副本采用统一的去标识化图像名，排除原始文件名、全部历史备份、个人答辩材料和访问凭据，并附 `SHA256SUMS.txt`。具体范围见 [`docs/PRIVATE_RELEASE.md`](docs/PRIVATE_RELEASE.md)。
+
+未获得该私有仓库访问权限时，请使用自有或获授权的数据，并在本地生成派生文件。
 
 ## 项目边界
 
 现有数据只包含 AOI 筛出的 NG 局部图，缺少完整 GOOD 图、总 die 数、wafer 坐标和工艺参数，因此不能据此计算真实良率。真实良率建模还需要完整的 GOOD/NG 分母、wafer map、批次、recipe、光照和时间信息。
-

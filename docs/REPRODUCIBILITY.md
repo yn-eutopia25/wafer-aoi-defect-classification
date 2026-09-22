@@ -27,5 +27,4 @@ For each formal experiment, retain locally:
 - model checkpoint hash;
 - validation or test designation.
 
-These files may contain local paths or private data fingerprints and therefore are not committed to GitHub.
-
+These files may contain local paths or private data fingerprints and therefore are not committed to Git history. Authorized sanitized copies may be retained in the controlled private Release described in `PRIVATE_RELEASE.md`.

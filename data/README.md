@@ -12,5 +12,4 @@ data/
 └── patches/          # Optional patch exports
 ```
 
-Do not commit real AOI images, annotation files, manifests or hashes. Use only data that you are authorized to process.
-
+Do not commit real AOI images, annotation files, manifests or hashes to Git history. Authorized normalized images and current annotations may be distributed only through the controlled private Release described in [`../docs/PRIVATE_RELEASE.md`](../docs/PRIVATE_RELEASE.md). Use only data that you are authorized to process.

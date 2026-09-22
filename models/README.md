@@ -4,3 +4,4 @@ Trained weights and serialized classifiers are stored here locally and are exclu
 
 Record model configuration, input data fingerprint and evaluation split in the corresponding local model card before using a model for comparison.
 
+Authorized formal model artifacts are distributed as a private Release attachment, not as Git objects. See [`../docs/PRIVATE_RELEASE.md`](../docs/PRIVATE_RELEASE.md) for the package name and integrity-check procedure.
